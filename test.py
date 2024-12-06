@@ -5,16 +5,26 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.core.window import Window
 from kivy.graphics import Color, Rectangle
+import serial
+import time
+
+
+arduino_port = 'COM5'
+
+ser = serial.Serial(arduino_port, 9600, timeout=1)
+time.sleep(2)
+
 
 class HomePage(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         
         # Crear un layout principal
-        main_layout = BoxLayout(orientation='vertical', spacing=20, padding=30)
+        main_layout = BoxLayout(orientation='vertical', spacing=30, padding=30)
         
         # Título de la aplicación
         title_label = Label(
+           
             text='Control de Motor Paso a Paso', 
             font_size='24sp', 
             color=(0.1, 0.1, 0.1, 1),
@@ -75,15 +85,19 @@ class HomePage(Screen):
     
     # Métodos de acción (igual que antes)
     def wave_drive_action(self, instance):
+        ser.write("1".encode())
         print("Wave Drive activado")
     
     def double_torque_action(self, instance):
+        ser.write("2".encode())
         print("Doble Torque activado")
     
     def half_step_action(self, instance):
+        ser.write("3".encode())
         print("Medio Paso activado")
     
     def reverse_action(self, instance):
+        ser.write("4".encode())
         print("Reversa activada")
 
 class ControlApp(App):
